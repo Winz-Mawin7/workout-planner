@@ -4,6 +4,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 First, run the development server:
 
+To run docker MongoDB database locally
+
+```
+docker-compose up -d
+```
+
 ```bash
 npm run dev
 # or
