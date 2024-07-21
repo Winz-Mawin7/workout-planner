@@ -1,1 +1,1 @@
-const OPEN_API_KEY = process.env.OPENAPI_KEY
+export const PAGE_TITLE = 'Workout Planner'
