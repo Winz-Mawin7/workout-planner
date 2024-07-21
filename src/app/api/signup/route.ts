@@ -1,7 +1,7 @@
 // app/api/register/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import { hash } from 'bcryptjs'
-import { connectDB } from '@/lib/mongodb'
+import { dbConnect } from '@/lib/mongodb'
 import { Users } from '@/models/users.model'
 
 export async function POST(req: NextRequest) {
@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await connectDB()
+    await dbConnect()
 
     const existingUser = await Users.findOne({ email })
     if (existingUser) return NextResponse.json({ message: 'User already exists' }, { status: 400 })

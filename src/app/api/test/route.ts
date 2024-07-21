@@ -1,11 +1,16 @@
-import clientPromise from '@/lib/mongodb'
+import { dbConnect } from '@/lib/mongodb'
+import { Users } from '@/models/users.model'
 
 export async function GET(request: Request) {
-  const client = await clientPromise
-  const usersCollection = client.db().collection('users')
+  await dbConnect()
+  const users = await Users.find()
 
-  const docs = await usersCollection.find({}).toArray()
-  console.log('🚀 ~ GET ~ docs:', docs)
+  console.log('🚀 ~ GET ~ docs:', users)
 
-  return new Response('Hello, Next.js!')
+  return Response.json({ users })
+}
+
+export async function POST(request: Request) {
+  const res = await request.json()
+  return Response.json({ res })
 }

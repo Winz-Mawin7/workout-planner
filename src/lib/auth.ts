@@ -1,5 +1,5 @@
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { connectDB } from '@/lib/mongodb'
+import { dbConnect } from '@/lib/mongodb'
 import { compare } from 'bcryptjs'
 import { AuthOptions } from 'next-auth'
 // import { MongoDBAdapter } from '@auth/mongodb-adapter'
@@ -28,7 +28,7 @@ export const authOptions: AuthOptions = {
         if (!credentials) return null
         const { email, password } = credentials
 
-        await connectDB()
+        await dbConnect()
         const user = await Users.findOne({ email })
 
         if (!user) return null

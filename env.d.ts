@@ -1,5 +1,5 @@
 export interface Env {
-  OPEN_API_KEY: string
+  OPENAI_API_KEY: string
   MONGODB_URI: string
   SALT_SECRET: string
   NEXT_AUTH_URL: string
