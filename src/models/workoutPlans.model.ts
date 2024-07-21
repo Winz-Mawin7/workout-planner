@@ -18,27 +18,11 @@ export interface IWorkoutPlanDocument extends IWorkoutPlan, Document<string> {
 
 const workoutPlansSchema = new Schema<IWorkoutPlan>(
   {
-    userId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Users',
-      required: true,
-    },
-    planName: {
-      type: String,
-      required: true,
-    },
-    birthdate: {
-      type: Date,
-      required: true,
-    },
-    height: {
-      type: Number,
-      required: true,
-    },
-    weight: {
-      type: Number,
-      required: true,
-    },
+    userId: { type: Schema.Types.ObjectId, ref: 'Users', required: true },
+    planName: { type: String, required: true },
+    birthdate: { type: Date, required: true },
+    height: { type: Number, required: true },
+    weight: { type: Number, required: true },
     weeklyActivities: [String],
     workoutGoals: [String],
     weeklyPlan: String,

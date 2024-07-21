@@ -1,18 +1,18 @@
 'use client'
 
-import React, { useState } from 'react'
-import { useSession } from 'next-auth/react'
-import { PersonalInfoData } from '@/components/form'
+import { useCreatePlan, usePlansQuery } from '@/data/plan/plan.query'
 import PersonalInfoForm from '@/components/form/PersonalInfoForm'
 import WorkoutGoalForm from '@/components/form/WorkoutGoalForm'
 import WorkoutPlanForm from '@/components/form/WorkoutPlanForm'
-import axios from 'axios'
+import { PersonalInfoData } from '@/components/form'
 import { PlanCard } from '@/components/card'
-import { usePlansQuery } from '@/data/plan/plan.query'
+import { useSession } from 'next-auth/react'
+import React, { useState } from 'react'
 
 export default function DashboardPage() {
-  const { data: plans } = usePlansQuery()
   const { data: session } = useSession()
+  const { data: plans } = usePlansQuery()
+  const { mutateAsync: createPlan, isPending } = useCreatePlan()
 
   const [step, setStep] = useState(1)
   const [personalInfo, setPersonalInfo] = useState<PersonalInfoData | null>(null)
@@ -29,14 +29,10 @@ export default function DashboardPage() {
   }
 
   const handleWorkoutPlanSubmit = async (plan: string) => {
+    if (!personalInfo) return
+
     try {
-      const response = await axios.post('/api/save-plan', {
-        userId: session?.user.id,
-        ...personalInfo,
-        workoutGoals,
-        weeklyPlan: plan,
-      })
-      console.log('🚀 ~ handleWorkoutPlanSubmit ~ response:', response)
+      await createPlan({ ...personalInfo, birthdate: new Date(personalInfo.birthdate), workoutGoals, weeklyPlan: plan })
 
       // Reset form and show success message
       setStep(1)

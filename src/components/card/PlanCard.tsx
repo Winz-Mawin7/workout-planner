@@ -1,9 +1,9 @@
-import { PlanResponse, useDeletePlanMutation } from '@/data/plan/plan.query'
+import { PlanResponse, useDeletePlan } from '@/data/plan/plan.query'
 import Link from 'next/link'
 
 export const PlanCard = (props: PlanResponse) => {
   const { _id, planName, workoutGoals } = props
-  const { mutate: deletePlan } = useDeletePlanMutation()
+  const { mutate: deletePlan } = useDeletePlan()
 
   const handleDelete = async () => {
     deletePlan(_id)
