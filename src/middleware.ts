@@ -2,13 +2,13 @@ import { getToken } from 'next-auth/jwt'
 import { withAuth } from 'next-auth/middleware'
 import { NextResponse } from 'next/server'
 
-const AUTH_TO_DASHBOARD_ROUTES = ['/login', '/signup', '/']
+const AUTH_TO_DASHBOARD_ROUTES = ['/login', '/signup']
 
 export default withAuth(
   async function middleware(req) {
     const token = await getToken({ req })
     const isAuth = !!token
-    const isAuthPage = AUTH_TO_DASHBOARD_ROUTES.some((v) => req.nextUrl.pathname === v)
+    const isAuthPage = AUTH_TO_DASHBOARD_ROUTES.some((v) => req.nextUrl.pathname.startsWith(v))
 
     if (isAuthPage) {
       if (isAuth) {
@@ -40,5 +40,5 @@ export default withAuth(
 )
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/login', '/signup', '/'],
+  matcher: ['/dashboard/:path*', '/login', '/signup'],
 }

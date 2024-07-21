@@ -1,7 +1,7 @@
 // components/WorkoutPlanForm.tsx
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { PersonalInfoData } from './PersonalInfoForm'
 import { useCompletion } from 'ai/react'
 
@@ -12,11 +12,16 @@ interface WorkoutPlanFormProps {
 }
 
 const WorkoutPlanForm: React.FC<WorkoutPlanFormProps> = ({ personalInfo, workoutGoals, onSubmit }) => {
-  const { complete, completion, isLoading } = useCompletion({
+  const { complete, completion, isLoading, stop } = useCompletion({
     api: '/api/generate-plan',
   })
 
   const generatePlan = async () => {
+    if (isLoading) {
+      stop()
+      return
+    }
+
     await complete(JSON.stringify({ personalInfo, workoutGoals }))
   }
 
@@ -29,13 +34,8 @@ const WorkoutPlanForm: React.FC<WorkoutPlanFormProps> = ({ personalInfo, workout
 
   return (
     <form onSubmit={submit} className="space-y-4">
-      <button
-        type="button"
-        onClick={generatePlan}
-        disabled={isLoading}
-        className="w-full bg-blue-500 text-white py-2 rounded"
-      >
-        {isLoading ? 'Generating...' : 'Generate Workout Plan'}
+      <button type="button" onClick={generatePlan} className="w-full bg-blue-500 text-white py-2 rounded">
+        {!isLoading ? 'Generate Workout Plan' : 'Stop'}
       </button>
       {completion && (
         <div>
