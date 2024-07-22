@@ -1,9 +1,8 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-import { Provider } from './Provider'
-import { useSession } from 'next-auth/react'
 import { NavBar } from '@/components/common'
+import { Inter } from 'next/font/google'
+import { Provider } from './Provider'
+import type { Metadata } from 'next'
+import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,8 +17,8 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="bg-background">
-      <body className={inter.className}>
+    <html lang="en" className="bg-base-200">
+      <body className={`${inter.className} flex min-h-dvh flex-col`}>
         <Provider>
           <NavBar />
           {children}

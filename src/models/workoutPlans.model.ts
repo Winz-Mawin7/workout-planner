@@ -7,7 +7,7 @@ export interface IWorkoutPlan {
   height: number
   weight: number
   weeklyActivities: string[]
-  workoutGoals: string[]
+  workoutGoal: string
   weeklyPlan: string
 }
 
@@ -24,8 +24,8 @@ const workoutPlansSchema = new Schema<IWorkoutPlan>(
     height: { type: Number, required: true },
     weight: { type: Number, required: true },
     weeklyActivities: [String],
-    workoutGoals: [String],
-    weeklyPlan: String,
+    workoutGoal: { type: String, required: true },
+    weeklyPlan: { type: String, required: true },
   },
   { timestamps: true },
 )

@@ -43,6 +43,8 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ onSubmit }) => {
     onSubmit(formData)
   }
 
+  console.log('🚀 ~ formData:', formData)
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
@@ -70,7 +72,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ onSubmit }) => {
           value={formData.birthdate}
           onChange={handleChange}
           required
-          className="w-full px-3 py-2 border rounded"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
       </div>
       <div>

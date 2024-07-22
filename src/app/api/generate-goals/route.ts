@@ -1,8 +1,5 @@
-// app/api/generate-goals/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
-import { OpenAIStream, StreamingTextResponse, streamText } from 'ai'
-// import { openai } from '@ai-sdk/openai'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -10,11 +7,10 @@ const openai = new OpenAI({
 
 export async function POST(req: NextRequest) {
   const personalInfo = await req.json()
-  console.log('🚀 ~ POST ~ personalInfo:', personalInfo)
 
   try {
     const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4o-mini',
       temperature: 0.6,
       max_tokens: 100,
       messages: [
@@ -27,33 +23,16 @@ export async function POST(req: NextRequest) {
             Weight: ${personalInfo.weight} kg
             Weekly Activities: ${personalInfo.weeklyActivities.join(', ')}
 
-            Respond with three short phrases without numbered or bullet points, delimited by newlines, that are specific, achievable workout goals.`,
+            Respond with three short phrases without numbered or bullet points, delimited by //, that are specific, achievable workout goals.`,
         },
       ],
     })
+    console.log('🚀 ~ POST ~ response:', JSON.stringify(response, null, 4))
 
-    console.log('🚀 ~ POST ~ stream:', JSON.stringify(response, null, 4))
-    const workoutGoals = response.choices[0].message.content?.split('\n').map((goal) => goal.trim())
+    const goalsSuggest = response.choices[0].message.content?.split('//').map((v) => v.trim()) || []
+    console.log('🚀 ~ POST ~ goalsSuggest:', goalsSuggest)
 
-    return Response.json(workoutGoals)
-
-    // const result = await streamText({
-    //   model: openai('gpt-3.5-turbo-0125'),
-    //   messages: [
-    //     { role: 'system', content: 'You are a professional fitness trainer.' },
-    //     {
-    //       role: 'user',
-    //       content: `Given the following information about a person, suggest 3 appropriate workout goals:
-    //       Date of Birth: ${personalInfo.birthdate}
-    //       Height: ${personalInfo.height} cm
-    //       Weight: ${personalInfo.weight} kg
-    //       Weekly Activities: ${personalInfo.weeklyActivities.join(', ')}
-
-    //       Provide 3 specific, achievable workout goals:`,
-    //     },
-    //   ],
-    // })
-    // return new StreamingTextResponse(result.toAIStream())
+    return Response.json(goalsSuggest)
   } catch (error) {
     console.error('Error generating workout goals:', error)
     return NextResponse.json({ error: 'Failed to generate workout goals' }, { status: 500 })

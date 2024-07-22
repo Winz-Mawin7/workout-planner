@@ -5,6 +5,7 @@
     "printWidth": 120,
     "semi": false,
     "plugins": [
-        "./node_modules/prettier-plugin-sort-imports/dist/index.js"
+        "./node_modules/prettier-plugin-sort-imports/dist/index.js",
+        "prettier-plugin-tailwindcss"
     ]
 }

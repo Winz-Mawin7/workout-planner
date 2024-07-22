@@ -1,7 +1,7 @@
-// app/api/generate-plan/route.ts
+import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
-import { OpenAIStream, StreamingTextResponse } from 'ai'
+// import { openai } from '@ai-sdk/openai'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -9,13 +9,13 @@ const openai = new OpenAI({
 
 export async function POST(req: NextRequest) {
   const body = await req.json()
-  console.log('🚀 ~ POST ~ body:', body)
-
-  const { personalInfo, workoutGoals } = JSON.parse(body.prompt)
+  const { personalInfo, workoutGoal } = JSON.parse(body.prompt)
 
   try {
     const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4o-mini',
+      temperature: 0.6,
+      // max_tokens: 1500,
       messages: [
         { role: 'system', content: 'You are a professional fitness trainer.' },
         {
@@ -27,9 +27,7 @@ export async function POST(req: NextRequest) {
           Weight: ${personalInfo.weight} kg
           Weekly Activities: ${personalInfo.weeklyActivities.join(', ')}
 
-          Workout Goals:
-          ${workoutGoals.join('\n')}
-
+          Workout Goals: ${workoutGoal}
           Provide a detailed day-by-day plan for one week, including exercises, sets, reps, and rest periods:`,
         },
       ],

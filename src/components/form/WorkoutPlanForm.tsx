@@ -1,49 +1,55 @@
-// components/WorkoutPlanForm.tsx
 'use client'
 
-import React from 'react'
+import { ArrowPathIcon } from '@heroicons/react/20/solid'
 import { PersonalInfoData } from './PersonalInfoForm'
+import React, { useCallback, useEffect } from 'react'
+import { Markdown } from '@/components/common'
 import { useCompletion } from 'ai/react'
 
 interface WorkoutPlanFormProps {
   personalInfo: PersonalInfoData
-  workoutGoals: string[]
+  workoutGoal: string
   onSubmit: (plan: string) => void
 }
 
-const WorkoutPlanForm: React.FC<WorkoutPlanFormProps> = ({ personalInfo, workoutGoals, onSubmit }) => {
-  const { complete, completion, isLoading, stop } = useCompletion({
+const WorkoutPlanForm: React.FC<WorkoutPlanFormProps> = ({ personalInfo, workoutGoal, onSubmit }) => {
+  const { complete, completion, isLoading } = useCompletion({
     api: '/api/generate-plan',
   })
 
-  const generatePlan = async () => {
-    if (isLoading) {
-      stop()
-      return
-    }
+  const generatePlan = useCallback(async () => {
+    await complete(JSON.stringify({ personalInfo, workoutGoal }))
+  }, [personalInfo, workoutGoal])
 
-    await complete(JSON.stringify({ personalInfo, workoutGoals }))
-  }
+  useEffect(() => {
+    console.log('generate plan run')
+    generatePlan()
+  }, [])
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (completion) {
-      onSubmit(completion)
-    }
+    if (isLoading) return
+
+    onSubmit(completion)
   }
 
   return (
     <form onSubmit={submit} className="space-y-4">
-      <button type="button" onClick={generatePlan} className="w-full bg-blue-500 text-white py-2 rounded">
-        {!isLoading ? 'Generate Workout Plan' : 'Stop'}
-      </button>
-      {completion && (
-        <div>
-          <h3 className="text-xl font-semibold mb-2">Generated Plan:</h3>
-          <pre className="whitespace-pre-wrap bg-gray-100 p-4 rounded">{completion}</pre>
+      <div>
+        <div className="flex flex-row justify-between">
+          <h3 className="text-xl font-semibold mb-2">Generated Plan</h3>
+          <button
+            className="btn btn-link btn-xs text-gray-500"
+            disabled={isLoading || !completion}
+            onClick={generatePlan}
+          >
+            Regenerate <ArrowPathIcon className="h-4 w-4" />
+          </button>
         </div>
-      )}
-      <button type="submit" disabled={!completion} className="w-full bg-green-500 text-white py-2 rounded">
+        <Markdown content={completion} />
+      </div>
+
+      <button type="submit" disabled={isLoading || !completion} className="w-full btn">
         Save Plan
       </button>
     </form>

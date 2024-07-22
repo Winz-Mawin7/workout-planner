@@ -1,24 +1,18 @@
 // components/WorkoutGoalForm.tsx
 'use client'
 
-import React, { useState } from 'react'
 import { PersonalInfoData } from './PersonalInfoForm'
-import { useCompletion } from 'ai/react'
+import React, { useState } from 'react'
 import axios from 'axios'
 
 interface WorkoutGoalFormProps {
   personalInfo: PersonalInfoData
-  onSubmit: (goals: string[]) => void
+  onSubmit: (goals: string) => void
 }
 
 const WorkoutGoalForm: React.FC<WorkoutGoalFormProps> = ({ personalInfo, onSubmit }) => {
   const [goalsSuggest, setGoalsSuggest] = useState<string[]>([])
   const [goalSelected, setGoalSelected] = useState('')
-
-  // const { complete, completion, isLoading, } = useCompletion({
-  //   api: '/api/generate-goals',
-
-  // })
 
   const generateGoals = async () => {
     const result = await axios.post('/api/generate-goals', personalInfo)
@@ -27,8 +21,10 @@ const WorkoutGoalForm: React.FC<WorkoutGoalFormProps> = ({ personalInfo, onSubmi
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit(goalsSuggest)
+    onSubmit(goalSelected)
   }
+
+  console.log('🚀 ~ goalsSuggest:', goalsSuggest)
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -41,7 +37,6 @@ const WorkoutGoalForm: React.FC<WorkoutGoalFormProps> = ({ personalInfo, onSubmi
         {/* {isLoading ? 'Generating...' : 'Generate Workout Goals'} */}
         {'Generate Workout Goals'}
       </button>
-      {}
 
       {goalsSuggest.map((goal) => (
         <button key={goal} className="btn btn-block" onClick={() => setGoalSelected(goal)}>

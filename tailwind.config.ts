@@ -6,11 +6,14 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  daisyui: {
+    themes: ['light'],
+  },
   theme: {
     extend: {
       colors: {
-        primary: '#1b1b1b',
-        background: '#F9FAFC',
+        // primary: '#1b1b1b',
+        // background: '#F9FAFC',
         // indigo: '#7743DB', // '#C3ACD0',
       },
       // backgroundImage: {

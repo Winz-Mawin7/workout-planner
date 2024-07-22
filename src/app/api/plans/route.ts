@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       height: planData.height,
       weight: planData.weight,
       weeklyActivities: planData.weeklyActivities,
-      workoutGoals: planData.workoutGoals,
+      workoutGoal: planData.workoutGoal,
       weeklyPlan: planData.weeklyPlan,
     })
 
