@@ -2,7 +2,7 @@
 
 import { PlanCard, PlanCardLoading } from '@/components/card'
 import { PlusCircleIcon } from '@heroicons/react/20/solid'
-import { usePlansQuery } from '@/data/plan/plan.query'
+import { usePlansQuery } from '@/data/plan.query'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React from 'react'

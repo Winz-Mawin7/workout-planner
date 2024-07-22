@@ -2,7 +2,7 @@
 
 import { IdentificationIcon, CakeIcon, CircleStackIcon } from '@heroicons/react/20/solid'
 import { Loading, Markdown } from '@/components/common'
-import { usePlanQuery } from '@/data/plan/plan.query'
+import { usePlanQuery } from '@/data/plan.query'
 
 export default function PlanDetailPage({ params }: { params: { id: string } }) {
   const { data: plan, isLoading, isError, error } = usePlanQuery(params.id)
@@ -12,8 +12,8 @@ export default function PlanDetailPage({ params }: { params: { id: string } }) {
   if (!plan) return <div>Plan not found</div>
 
   return (
-    <div className="container mx-auto p-4 gap-4 flex flex-col">
-      <div className="bg-white rounded-xl p-4 flex flex-col gap-4">
+    <div className="container mx-auto flex flex-col gap-4 p-4">
+      <div className="flex flex-col gap-4 rounded-xl bg-white p-4">
         <div className="min-w-0 flex-1">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
             {plan.planName}

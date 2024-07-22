@@ -1,6 +1,6 @@
 'use client'
 
-import { PlanResponse, useDeletePlan } from '@/data/plan/plan.query'
+import { PlanResponse, useDeletePlan } from '@/data/plan.query'
 import ConfirmDialog from '../common/ConfirmDialog'
 import { useState } from 'react'
 import Link from 'next/link'

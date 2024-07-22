@@ -18,9 +18,6 @@ export const NavBar = () => {
         <div>
           {session ? (
             <>
-              {/* <Link href="/dashboard" className="btn btn-link mr-6 hidden md:inline">
-                Dashboard
-              </Link> */}
               <button onClick={() => signOut()} className="btn btn-ghost btn-sm">
                 Log out
                 <svg

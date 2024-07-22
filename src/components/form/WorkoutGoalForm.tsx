@@ -1,58 +1,68 @@
-// components/WorkoutGoalForm.tsx
 'use client'
 
+import { useGenerateGoalsQuery } from '@/data/generate.query'
+import { ArrowLeftIcon } from '@heroicons/react/24/outline'
+import { ArrowPathIcon } from '@heroicons/react/20/solid'
 import { PersonalInfoData } from './PersonalInfoForm'
+import { PlanCardLoading } from '../card'
 import React, { useState } from 'react'
-import axios from 'axios'
+import clsx from 'clsx'
 
 interface WorkoutGoalFormProps {
   personalInfo: PersonalInfoData
   onSubmit: (goals: string) => void
+  goBack: () => void
 }
 
-const WorkoutGoalForm: React.FC<WorkoutGoalFormProps> = ({ personalInfo, onSubmit }) => {
-  const [goalsSuggest, setGoalsSuggest] = useState<string[]>([])
+const WorkoutGoalForm: React.FC<WorkoutGoalFormProps> = ({ personalInfo, onSubmit, goBack }) => {
   const [goalSelected, setGoalSelected] = useState('')
 
-  const generateGoals = async () => {
-    const result = await axios.post('/api/generate-goals', personalInfo)
-    setGoalsSuggest(result.data)
-  }
+  const { data: goalsSuggest, isFetching, refetch } = useGenerateGoalsQuery(personalInfo)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     onSubmit(goalSelected)
   }
 
-  console.log('🚀 ~ goalsSuggest:', goalsSuggest)
+  const handleRefresh = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    refetch()
+  }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <button
-        type="button"
-        onClick={generateGoals}
-        // disabled={isLoading}
-        className="w-full bg-blue-500 text-white py-2 rounded"
-      >
-        {/* {isLoading ? 'Generating...' : 'Generate Workout Goals'} */}
-        {'Generate Workout Goals'}
-      </button>
+    <div className="flex flex-col gap-4">
+      <div className="btn btn-sm self-start" onClick={goBack}>
+        <ArrowLeftIcon className="h-4 w-4" />
+        Back
+      </div>
+      <h2 className="text-lg font-bold">Work out Goal </h2>
 
-      {goalsSuggest.map((goal) => (
-        <button key={goal} className="btn btn-block" onClick={() => setGoalSelected(goal)}>
-          {goal}
-        </button>
-      ))}
-      {/* {completion && (
-        <div>
-          <h3 className="text-xl font-semibold mb-2">Generated Goals:</h3>
-          <pre className="whitespace-pre-wrap bg-gray-100 p-4 rounded">{completion}</pre>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="flex flex-row items-center justify-between">
+          <p className="text-sm font-semibold">Choose one goal</p>
+          <button className="btn btn-link btn-xs text-gray-500" disabled={isFetching} onClick={handleRefresh}>
+            regenerate <ArrowPathIcon className="h-4 w-4" />
+          </button>
         </div>
-      )} */}
-      <button type="submit" disabled={!goalSelected} className="w-full bg-green-500 text-white py-2 rounded">
-        Next
-      </button>
-    </form>
+
+        {isFetching ? (
+          <PlanCardLoading />
+        ) : (
+          goalsSuggest?.map((goal) => (
+            <div
+              key={goal}
+              className={clsx('btn btn-block', { 'border-slate-800': goalSelected === goal })}
+              onClick={() => setGoalSelected(goal)}
+            >
+              {goal}
+            </div>
+          ))
+        )}
+        <button type="submit" disabled={!goalSelected} className="btn btn-neutral mt-4 w-full">
+          Next
+        </button>
+      </form>
+    </div>
   )
 }
 

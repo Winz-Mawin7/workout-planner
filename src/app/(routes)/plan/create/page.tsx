@@ -3,8 +3,8 @@
 import PersonalInfoForm from '@/components/form/PersonalInfoForm'
 import WorkoutGoalForm from '@/components/form/WorkoutGoalForm'
 import WorkoutPlanForm from '@/components/form/WorkoutPlanForm'
-import { useCreatePlan } from '@/data/plan/plan.query'
 import { PersonalInfoData } from '@/components/form'
+import { useCreatePlan } from '@/data/plan.query'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -26,19 +26,20 @@ export default function CreatePlanPage() {
     setStep(3)
   }
 
+  const goBack = () => setStep((prev) => prev - 1)
+
   const handleWorkoutPlanSubmit = async (plan: string) => {
     if (!personalInfo) return
     if (isPending) return
 
     try {
       await createPlan({ ...personalInfo, birthdate: new Date(personalInfo.birthdate), workoutGoal, weeklyPlan: plan })
+      router.push('/dashboard')
 
       // Reset form and show success message
-      setStep(1)
-      setPersonalInfo(null)
-      setworkoutGoal('')
-
-      router.push('/dashboard')
+      // setStep(1)
+      // setPersonalInfo(null)
+      // setworkoutGoal('')
     } catch (error) {
       console.error('Error saving workout plan:', error)
       alert('Failed to save workout plan. Please try again.')
@@ -46,14 +47,19 @@ export default function CreatePlanPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 relative">
-      <div className="mt-8">
+    <div className="container relative mx-auto">
+      <div className="mx-4 my-12 mt-8 rounded bg-white px-4 py-8">
         {step === 1 && <PersonalInfoForm onSubmit={handlePersonalInfoSubmit} />}
         {step === 2 && personalInfo && (
-          <WorkoutGoalForm personalInfo={personalInfo} onSubmit={handleworkoutGoalSubmit} />
+          <WorkoutGoalForm personalInfo={personalInfo} onSubmit={handleworkoutGoalSubmit} goBack={goBack} />
         )}
         {step === 3 && personalInfo && (
-          <WorkoutPlanForm personalInfo={personalInfo} workoutGoal={workoutGoal} onSubmit={handleWorkoutPlanSubmit} />
+          <WorkoutPlanForm
+            personalInfo={personalInfo}
+            workoutGoal={workoutGoal}
+            onSubmit={handleWorkoutPlanSubmit}
+            goBack={goBack}
+          />
         )}
       </div>
     </div>

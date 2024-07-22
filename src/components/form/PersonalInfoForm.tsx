@@ -1,6 +1,7 @@
 // components/PersonalInfoForm.tsx
 'use client'
 
+import { PlusCircleIcon } from '@heroicons/react/24/outline'
 import React, { useState } from 'react'
 
 interface PersonalInfoFormProps {
@@ -43,85 +44,86 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ onSubmit }) => {
     onSubmit(formData)
   }
 
-  console.log('🚀 ~ formData:', formData)
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="planName" className="block mb-1">
-          Plan Name
-        </label>
-        <input
-          type="text"
-          id="planName"
-          name="planName"
-          value={formData.planName}
-          onChange={handleChange}
-          required
-          className="w-full px-3 py-2 border rounded"
-        />
-      </div>
-      <div>
-        <label htmlFor="birthdate" className="block mb-1">
-          Date of Birth
-        </label>
-        <input
-          type="date"
-          id="birthdate"
-          name="birthdate"
-          value={formData.birthdate}
-          onChange={handleChange}
-          required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        />
-      </div>
-      <div>
-        <label htmlFor="height" className="block mb-1">
-          Height (cm)
-        </label>
-        <input
-          type="number"
-          id="height"
-          name="height"
-          value={formData.height}
-          onChange={handleChange}
-          required
-          className="w-full px-3 py-2 border rounded"
-        />
-      </div>
-      <div>
-        <label htmlFor="weight" className="block mb-1">
-          Weight (kg)
-        </label>
-        <input
-          type="number"
-          id="weight"
-          name="weight"
-          value={formData.weight}
-          onChange={handleChange}
-          required
-          className="w-full px-3 py-2 border rounded"
-        />
-      </div>
-      <div>
-        <label className="block mb-1">Weekly Activities</label>
-        {formData.weeklyActivities.map((activity, index) => (
+    <div className="flex flex-col gap-4">
+      <h2 className="text-lg font-bold">Personal Info</h2>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+        <div>
+          <label htmlFor="planName" className="label label-text">
+            Plan Name
+          </label>
           <input
-            key={index}
             type="text"
-            value={activity}
-            onChange={(e) => handleActivityChange(index, e.target.value)}
-            className="w-full px-3 py-2 border rounded mb-2"
+            id="planName"
+            name="planName"
+            value={formData.planName}
+            onChange={handleChange}
+            required
+            className="input input-bordered w-full"
           />
-        ))}
-        <button type="button" onClick={addActivity} className="bg-blue-500 text-white px-4 py-2 rounded">
-          Add Activity
+        </div>
+        <div>
+          <label htmlFor="birthdate" className="label label-text">
+            Date of Birth
+          </label>
+          <input
+            type="date"
+            id="birthdate"
+            name="birthdate"
+            value={formData.birthdate}
+            onChange={handleChange}
+            required
+            className="input input-bordered w-full"
+          />
+        </div>
+        <div>
+          <label htmlFor="height" className="label label-text">
+            Height (cm)
+          </label>
+          <input
+            type="number"
+            id="height"
+            name="height"
+            value={formData.height}
+            onChange={handleChange}
+            required
+            className="input input-bordered w-full"
+          />
+        </div>
+        <div>
+          <label htmlFor="weight" className="label label-text">
+            Weight (kg)
+          </label>
+          <input
+            type="number"
+            id="weight"
+            name="weight"
+            value={formData.weight}
+            onChange={handleChange}
+            required
+            className="input input-bordered w-full"
+          />
+        </div>
+        <div className="flex flex-col gap-4">
+          <label className="label label-text">Weekly Activities</label>
+          {formData.weeklyActivities.map((activity, index) => (
+            <input
+              key={index}
+              type="text"
+              value={activity}
+              onChange={(e) => handleActivityChange(index, e.target.value)}
+              className="input input-bordered w-full"
+            />
+          ))}
+        </div>
+        <button type="button" onClick={addActivity} className="btn btn-outline btn-sm w-fit text-xs text-gray-500">
+          Add activity <PlusCircleIcon className="h-5 w-5" />
         </button>
-      </div>
-      <button type="submit" className="w-full bg-green-500 text-white py-2 rounded">
-        Next
-      </button>
-    </form>
+        <button type="submit" className="btn btn-neutral mt-4 w-full">
+          Next
+        </button>
+      </form>
+    </div>
   )
 }
 
