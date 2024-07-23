@@ -39,6 +39,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Note
 - `docker-compose` to access .env instead of hardcode
+- `OPENAI_API_KEY` genrate from https://platform.openai.com/api-keys but you have to add payment method and top-up.
 
 update variables ex. MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD, ...etc
 
@@ -75,7 +76,7 @@ update variables ex. MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD, ...
 ### Tools Used
 - Next.js 14 (TypeScript) app router 
 - React 18
-- Tailwind CSS
+- Tailwind CSS + daisyUI
 - MongoDB
 - Mongoose
 - Docker
