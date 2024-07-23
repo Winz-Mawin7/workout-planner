@@ -2,13 +2,28 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+## Installation
 
-To run docker MongoDB database locally
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/your-username/workout-planner.git
+   cd workout-plann
+   pnpm install # npm or yarn
+   ```
+
+2. Create environment variables
+
+Create `.env` or `.env.local` file exmaple from `.env.example`
+
+3. To run docker MongoDB and Mongo Express database locally
+
+installation: https://docs.docker.com/engine/install/
 
 ```
 docker-compose up -d
 ```
+
+4. run the development server:
 
 ```bash
 npm run dev
@@ -21,6 +36,59 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+### Note
+- `docker-compose` to access .env instead of hardcode
+
+update variables ex. MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD, ...etc
+
+### Folders structure
+
+    |-- src/
+    |   |-- app/                # NextJS source code
+    |   |   ├── (routes)/       # app page router
+    |   |   ├── api/            # app api router
+    |   |
+    |   |-- components/         # shared components
+    |   |   
+    |   |-- constants/          # constatns variables
+    |   |
+    |   |-- data/               # data contains api integration
+    |   |
+    |   |-- hooks/              # custom hooks
+    |   |
+    |   |-- lib/                # utility libraties
+    |   |
+    |   |-- models/             # Mongoose models
+    |   |
+    |   |-- schema/             # validation schema
+    |   |
+    |   |-- types/              # typescript shared types
+    |   |
+    |   |-- utils/              # utility functions
+    |   |
+    |-- README.md               # README file
+    |-- .env                    # environment variables
+    |-- docker-compose.yml      # docker-compose images file
+
+
+### Tools Used
+- Next.js 14 (TypeScript) app router 
+- React 18
+- Tailwind CSS
+- MongoDB
+- Mongoose
+- Docker
+- Prettier
+- EsLint
+- zod
+- react-hook-form
+- axios
+- ai
+- openai
+- next-auth v4
+- react-query
+
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
